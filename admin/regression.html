@@ -1,0 +1,106 @@
+<style>
+    /* Admin panel styles */
+    .admin-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  
+    .chart-container {
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  
+    .chart-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  
+    .axis-label {
+      font-size: 12px;
+    }
+  </style>
+  
+  <div class="admin-panel">
+    <div class="chart-container" id="area-chart-container">
+      <h3 class="chart-title">Area Chart</h3>
+      <div id="area-chart"></div>
+    </div>
+  </div>
+  
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // Dummy data for the area chart
+    const areaChartData = [
+      { month: 'Jan', value: 30 },
+      { month: 'Feb', value: 100 },
+      { month: 'Mar', value: 1000 },
+      { month: 'Apr', value: 1524 },
+      { month: 'May', value: 2000 },
+      { month: 'Jun', value: 3200 },
+      // Add more data entries for the area chart
+    ];
+  
+    // Set the dimensions for the chart
+    const width = 400;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+  
+    // Create the SVG container for the area chart
+    const areaSvg = d3.select('#area-chart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+  
+    const xScale = d3.scaleBand()
+      .domain(areaChartData.map((d) => d.month))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+  
+    const yScale = d3.scaleLinear()
+      .domain([0, 3000]) // Adjust the y-scale domain to 0 - 3000
+      .range([height - margin.bottom, margin.top]);
+  
+    const areaGenerator = d3.area()
+      .x((d) => xScale(d.month) + xScale.bandwidth() / 2)
+      .y0(height - margin.bottom)
+      .y1((d) => yScale(d.value))
+      .curve(d3.curveMonotoneX); // Use curveMonotoneX for smoother interpolation
+  
+    areaSvg.append('path')
+      .datum(areaChartData)
+      .attr('fill', 'steelblue')
+      .attr('d', areaGenerator);
+  
+    // Create the x-axis
+    const xAxis = d3.axisBottom(xScale);
+    areaSvg.append('g')
+      .attr('transform', `translate(0, ${height - margin.bottom})`)
+      .call(xAxis);
+  
+    // Create the y-axis
+    const yAxis = d3.axisLeft(yScale);
+    areaSvg.append('g')
+      .attr('transform', `translate(${margin.left}, 0)`)
+      .call(yAxis);
+  
+    // Add labels to the axes
+    areaSvg.append('text')
+      .attr('class', 'axis-label')
+      .attr('x', width / 2)
+      .attr('y', height - 10)
+      .attr('text-anchor', 'middle')
+      .text('Month');
+  
+    areaSvg.append('text')
+      .attr('class', 'axis-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2)
+      .attr('y', 15)
+      .attr('text-anchor', 'middle')
+      .text('Value');
+  </script>
+  
