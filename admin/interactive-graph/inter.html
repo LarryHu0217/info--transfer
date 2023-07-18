@@ -1,0 +1,266 @@
+<style>
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+  
+    .dropdown-btn {
+      background-color: #f1f1f1;
+      border: none;
+      color: black;
+      padding: 10px 16px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f9f9f9;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+  
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+  
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+  
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+  
+    .dropdown:hover .dropdown-btn {
+      background-color: #ddd;
+    }
+  
+    .graph-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+
+
+<div class="graph-container">
+    <div id="graph"></div>
+  </div>
+  
+  <div class="dropdown">
+    <button class="dropdown-btn">Choose Graph</button>
+    <div class="dropdown-content">
+      <a id="weekly-option">Weekly Active Users</a>
+      <a id="pageviews-option">Page Views</a>
+      <a id="monthly-option">Monthly Active Users</a>
+    </div>
+  </div>
+  
+  <style>
+    .graph-container {
+      width: 500px;
+      height: 300px;
+    }
+  </style>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script> 
+const weeklyData = [
+  { week: 'Week 1', value: 100 },
+  { week: 'Week 2', value: 10 },
+  { week: 'Week 3', value: 200 },
+  // Add more data entries for weekly active users
+];
+
+const pageViewsData = [
+  { week: 'Week 1', value: 500 },
+  { week: 'Week 2', value: 800 },
+  { week: 'Week 3', value: 1200 },
+  // Add more data entries for page views
+];
+
+const monthlyData = [
+  { month: 'January', value: 1000 },
+  { month: 'February', value: 1200 },
+  { month: 'March', value: 1500 },
+  // Add more data entries for monthly active users
+];
+</script>
+<!-- 
+<script>
+function drawGraph(data) {
+    // Clear the existing graph
+    d3.select('#graph').html('');
+  
+    // Set the dimensions for the graph
+    const width = 500;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+  
+    // Create the SVG container
+    const svg = d3.select('#graph')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+  
+    // Set up the x-axis scale
+    const xScale = d3
+      .scaleBand()
+      .domain(data.map((d) => d.week || d.month))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+  
+    // Set up the y-axis scale
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, (d) => d.value)])
+      .range([height - margin.bottom, margin.top]);
+  
+    // Create the bars
+    svg
+      .selectAll('rect')
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('x', (d) => xScale(d.week || d.month))
+      .attr('y', (d) => yScale(d.value))
+      .attr('width', xScale.bandwidth())
+      .attr('height', (d) => height - margin.bottom - yScale(d.value))
+      .attr('fill', 'steelblue');
+  
+    // Create the x-axis
+    const xAxis = d3.axisBottom(xScale);
+    svg
+      .append('g')
+      .attr('transform', `translate(0, ${height - margin.bottom})`)
+      .call(xAxis);
+  
+    // Create the y-axis
+    const yAxis = d3.axisLeft(yScale);
+    svg
+      .append('g')
+      .attr('transform', `translate(${margin.left}, 0)`)
+      .call(yAxis);
+  }
+</script> -->
+
+
+<script>
+const switchButton = document.getElementById('switch-btn');
+let currentData = weeklyData; // Initial data set
+
+switchButton.addEventListener('click', () => {
+  // Toggle between the data sets
+  if (currentData === weeklyData) {
+    currentData = pageViewsData;
+  } else if (currentData === pageViewsData) {
+    currentData = monthlyData;
+  } else {
+    currentData = weeklyData;
+  }
+
+  // Redraw the graph with the new data set
+  drawGraph(currentData);
+});
+
+// Draw the initial graph
+drawGraph(currentData);
+
+</script>
+<script>
+const dropdownBtn = document.querySelector('.dropdown-btn');
+const weeklyOption = document.getElementById('weekly-option');
+const pageViewsOption = document.getElementById('pageviews-option');
+const monthlyOption = document.getElementById('monthly-option');
+
+// Event listeners for dropdown options
+weeklyOption.addEventListener('click', () => {
+  drawGraph(weeklyData, 'Weekly Active Users');
+});
+
+pageViewsOption.addEventListener('click', () => {
+  drawGraph(pageViewsData, 'Page Views');
+});
+
+monthlyOption.addEventListener('click', () => {
+  drawGraph(monthlyData, 'Monthly Active Users');
+});
+
+// Default graph on page load
+drawGraph(weeklyData, 'Weekly Active Users');
+
+function drawGraph(data, title) {
+  // Clear the existing graph
+  d3.select('#graph').html('');
+
+  // Set the dimensions for the graph
+  const width = 500;
+  const height = 300;
+  const margin = { top: 40, right: 20, bottom: 40, left: 40 };
+
+  // Create the SVG container
+  const svg = d3.select('#graph')
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+  // Set up the x-axis scale
+  const xScale = d3
+    .scaleBand()
+    .domain(data.map((d) => d.week || d.month))
+    .range([margin.left, width - margin.right])
+    .padding(0.1);
+
+  // Set up the y-axis scale
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, (d) => d.value)])
+    .range([height - margin.bottom, margin.top]);
+
+  // Define the line generator
+  const line = d3
+    .line()
+    .x((d) => xScale(d.week || d.month) + xScale.bandwidth() / 2)
+    .y((d) => yScale(d.value))
+    .curve(d3.curveMonotoneX);
+
+  // Append the line path
+  svg
+    .append('path')
+    .datum(data)
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-width', 2)
+    .attr('d', line);
+
+  // Create the x-axis
+  const xAxis = d3.axisBottom(xScale);
+  svg
+    .append('g')
+    .attr('transform', `translate(0, ${height - margin.bottom})`)
+    .call(xAxis);
+
+  // Create the y-axis
+  const yAxis = d3.axisLeft(yScale);
+  svg
+    .append('g')
+    .attr('transform', `translate(${margin.left}, 0)`)
+    .call(yAxis);
+
+  // Add the graph title
+  svg
+    .append('text')
+    .attr('class', 'graph-title')
+    .attr('x', width / 2)
+    .attr('y', margin.top / 2)
+    .attr('text-anchor', 'middle')
+    .text(title);
+}
+
+
+</script>

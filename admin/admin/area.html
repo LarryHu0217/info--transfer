@@ -1,0 +1,343 @@
+<style>
+    /* Admin panel styles */
+    .admin-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  
+    .chart-container {
+      background-color: #f1f1f1;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  
+    .chart-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  
+    .axis-label {
+      font-size: 12px;
+    }
+  </style>
+  
+  <div class="admin-panel">
+    <div class="chart-container" id="area-chart-container">
+      <h3 class="chart-title"> Total user of PT number from beginning</h3>
+      <div id="area-chart"></div>
+    </div>
+
+    <div class="chart-container" id="pie-chart-container">
+        <h3 class="chart-title"> Views directly enter the Preggression Tools</h3>
+        <div id="pie-chart"></div>
+      </div>
+
+      <div class="chart-container" id="histogram-container">
+        <h3 class="chart-title">Different Department Using Pregression Tools</h3>
+        <div id="barchart"></div>
+      </div>
+
+    </div>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // Dummy data for the area chart
+    const areaChartData = [
+      { month: '2024Jan', value: 30 },
+      { month: '2024Feb', value: 100 },
+      { month: '2024Mar', value: 1000 },
+      { month: '2024Apr', value: 1524 },
+      { month: '2024May', value: 2000 },
+      { month: '2024Jun', value: 3200 },
+      // Add more data entries for the area chart
+    ];
+  
+    // Set the dimensions for the chart
+    const width = 400;
+    const height = 300;
+    const margin = { top: 20, right: 20, bottom: 40, left: 60 }; // Adjusted left margin for the y-axis label
+  
+    // Create the SVG container for the area chart
+    const areaSvg = d3.select('#area-chart')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+  
+    const xScale = d3.scaleBand()
+      .domain(areaChartData.map((d) => d.month))
+      .range([margin.left, width - margin.right])
+      .padding(0.1);
+  
+    const yScale = d3.scaleLinear()
+      .domain([0, 3000]) // Adjust the y-scale domain to 0 - 3000
+      .range([height - margin.bottom, margin.top]);
+  
+    const areaGenerator = d3.area()
+      .x((d) => xScale(d.month) + xScale.bandwidth() / 2)
+      .y0(height - margin.bottom)
+      .y1((d) => yScale(d.value))
+      .curve(d3.curveMonotoneX); // Use curveMonotoneX for smoother interpolation
+  
+    areaSvg.append('path')
+      .datum(areaChartData)
+      .attr('fill', 'steelblue')
+      .attr('d', areaGenerator);
+  
+    // Create the x-axis
+    const xAxis = d3.axisBottom(xScale);
+    areaSvg.append('g')
+      .attr('transform', `translate(0, ${height - margin.bottom})`)
+      .call(xAxis);
+  
+    // Create the y-axis
+    const yAxis = d3.axisLeft(yScale);
+    const yAxisGroup = areaSvg.append('g')
+      .attr('transform', `translate(${margin.left}, 0)`)
+      .call(yAxis);
+  
+    // Add labels to the axes
+    areaSvg.append('text')
+      .attr('class', 'axis-label')
+      .attr('x', -(height / 2))
+      .attr('y', margin.top - 10) // Adjusted y-position for the y-axis label
+      .attr('text-anchor', 'middle')
+      .attr('transform', 'rotate(-90)')
+      .text('Total users of PT');
+  </script>
+  
+
+
+
+  <script>
+    // Data for the pie chart
+    const pieData = [
+      { label: 'Label A', value: 30 },
+      { label: 'Label B', value: 40 },
+      { label: 'Label C', value: 20 },
+      // Add more data entries for the pie chart
+    ];
+  
+    // Set the dimensions for the charts
+    const width1 = 400;
+    const height1 = 300;
+    const margin1 = { top: 20, right: 20, bottom: 40, left: 40 };
+  
+    // Create the SVG container for the pie chart
+    const pieSvg = d3.select('#pie-chart')
+      .append('svg')
+      .attr('width', width1)
+      .attr('height', height1)
+      .append('g')
+      .attr('transform', `translate(${width1 / 2}, ${height1 / 2})`);
+  
+    // Set up the pie layout
+    const pie = d3.pie()
+      .value((d) => d.value);
+  
+    // Generate the arc paths
+    const arc = d3.arc()
+      .innerRadius(0)
+      .outerRadius(Math.min(width1, height1) / 2 - 10);
+  
+    const pieSlices = pieSvg.selectAll('path')
+      .data(pie(pieData))
+      .enter()
+      .append('path')
+      .attr('d', arc)
+      .attr('fill', (d, i) => d3.schemeCategory10[i % 10]);
+  
+    // Add category labels to the pie slices
+    pieSvg.selectAll('text')
+      .data(pie(pieData))
+      .enter()
+      .append('text')
+      .attr('transform', (d) => `translate(${arc.centroid(d)})`)
+      .attr('text-anchor', 'middle')
+      .text((d) => d.data.label);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="barchart"></div>
+
+<script>
+  // Data for the bar chart
+  const barChartData = [
+    { name: 'Using PT', value: 0.1 },
+    { name: 'Not Using PT', value: 0.3 }
+  ];
+
+  // Set the dimensions for the chart
+//   const width1 = 400;
+//   const height1 = 300;
+//   const margin1 = { top: 20, right: 20, bottom: 40, left: 40 };
+
+  // Calculate the inner width and height
+  const innerWidth = width1 - margin1.left - margin1.right;
+  const innerHeight = height1 - margin1.top - margin1.bottom;
+
+  // Create the SVG container for the bar chart
+  const barChartSvg = d3.select('#barchart')
+    .append('svg')
+    .attr('width', width1)
+    .attr('height', height1);
+
+  // Create the x-scale
+  const xScale1 = d3.scaleBand()
+    .domain(barChartData.map(d => d.name))
+    .range([margin1.left, width1 - margin1.right])
+    .padding(0.1);
+
+  // Create the y-scale
+  const yScale1 = d3.scaleLinear()
+    .domain([0, d3.max(barChartData, d => d.value)])
+    .range([height1 - margin1.bottom, margin1.top]);
+
+  // Create the bars
+  const bars = barChartSvg.selectAll('rect')
+    .data(barChartData)
+    .enter()
+    .append('rect')
+    .attr('x', d => xScale1(d.name))
+    .attr('y', d => yScale1(d.value))
+    .attr('width', xScale1.bandwidth())
+    .attr('height', d => innerHeight - yScale1(d.value))
+    .attr('fill', 'steelblue');
+
+  // Create x-axis for the bar chart
+  const xAxis1 = d3.axisBottom(xScale1);
+  barChartSvg.append('g')
+    .attr('transform', `translate(0, ${height1 - margin1.bottom})`)
+    .call(xAxis1);
+
+  // Create y-axis for the bar chart
+  const yAxis1 = d3.axisLeft(yScale1);
+  barChartSvg.append('g')
+    .attr('transform', `translate(${margin1.left}, 0)`)
+    .call(yAxis1);
+
+  // Add labels to the axes
+  barChartSvg.append('text')
+    .attr('class', 'axis-label')
+    .attr('x', width1 / 2)
+    .attr('y', height1 - margin1.bottom + 30)
+    .attr('text-anchor', 'middle')
+    .text('Category');
+
+  barChartSvg.append('text')
+    .attr('class', 'axis-label')
+    .attr('transform', 'rotate(-90)')
+    .attr('x', -height1 / 2)
+    .attr('y', 7)
+    .attr('text-anchor', 'middle')
+    .text('tranferring rate ');
+</script>
+
+
+
+
+
+<!-- 
+
+
+<script>
+    // Data for the histogram
+    const histogramData = [
+      0.3, 0.5
+    ];
+  
+    // Set the dimensions for the chart
+    // const width1 = 400;
+    // const height1 = 300;
+    // const margin1 = { top: 20, right: 20, bottom: 40, left: 40 };
+  
+    // Create the SVG container for the histogram
+    const histogramSvg = d3.select('#histogram')
+      .append('svg')
+      .attr('width', width1)
+      .attr('height', height1);
+  
+    // Create the histogram
+    const histogram = d3.histogram()
+      .domain(d3.extent(histogramData))
+      .value((d) => d);
+  
+    const bins = histogram(histogramData);
+  
+    const xScale1 = d3.scaleLinear()
+      .domain([d3.min(histogramData), d3.max(histogramData)])
+      .range([margin1.left, width1 - margin1.right]);
+  
+    const yScale1 = d3.scaleLinear()
+      .domain([0, d3.max(bins, (d) => d.length)])
+      .range([height1 - margin1.bottom, margin1.top]);
+  
+    const histogramBars = histogramSvg.selectAll('rect')
+      .data(bins)
+      .enter()
+      .append('rect')
+      .attr('x', (d) => xScale1(d.x0))
+      .attr('y', (d) => yScale1(d.length))
+      .attr('width', (d) => xScale1(d.x1) - xScale1(d.x0) - 1)
+      .attr('height', (d) => height1 - margin1.bottom - yScale1(d.length))
+      .attr('fill', 'steelblue');
+  
+    // Create x-axis for the histogram
+    // const xAxis1 = d3.axisBottom(xScale1);
+    // histogramSvg.append('g')
+    //   .attr('transform', `translate(0, ${height1 - margin1.bottom})`)
+    //   .call(xAxis1);
+  
+    // Create y-axis for the histogram
+    const yAxis1 = d3.axisLeft(yScale1);
+    histogramSvg.append('g')
+      .attr('transform', `translate(${margin1.left}, 0)`)
+      .call(yAxis1);
+  
+    // Add labels to the axes
+    histogramSvg.append('text')
+      .attr('class', 'axis-label')
+      .attr('x', width1 / 2)
+      .attr('y', height1 - margin1.bottom + 30)
+      .attr('text-anchor', 'middle')
+      .text('Value');
+  
+    histogramSvg.append('text')
+      .attr('class', 'axis-label')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height1 / 2)
+      .attr('y', 15)
+      .attr('text-anchor', 'middle')
+      .text('Frequency');
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -->
