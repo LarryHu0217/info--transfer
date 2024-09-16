@@ -1,0 +1,28 @@
+Sub BoldTextInRowAE()
+    Dim cell As Range
+    Dim issueSummaryPos As Integer, reasonForOverduePos As Integer, newStepsPos As Integer, revisedDueDatePos As Integer
+    Dim fullText As String
+
+    ' Loop through all cells in row AE (change range as needed)
+    For Each cell In Range("AE1:AE100") ' Adjust the range as per your requirement
+        If Not IsEmpty(cell.Value) Then
+            ' Construct the full text from cell value
+            fullText = cell.Value
+
+            ' Identify the positions of the sections
+            issueSummaryPos = InStr(fullText, "Issue Summary:")
+            reasonForOverduePos = InStr(fullText, "Reason for Overdue:")
+            newStepsPos = InStr(fullText, "New Steps:")
+            revisedDueDatePos = InStr(fullText, "When will a revised due date be acquired:")
+
+            ' Clear the formula (optional: you may want to preserve the formula in another way)
+            cell.Value = fullText
+
+            ' Apply bold formatting to specific parts
+            If issueSummaryPos > 0 Then cell.Characters(issueSummaryPos, 14).Font.Bold = True
+            If reasonForOverduePos > 0 Then cell.Characters(reasonForOverduePos, 18).Font.Bold = True
+            If newStepsPos > 0 Then cell.Characters(newStepsPos, 9).Font.Bold = True
+            If revisedDueDatePos > 0 Then cell.Characters(revisedDueDatePos, 38).Font.Bold = True
+        End If
+    Next cell
+End Sub
