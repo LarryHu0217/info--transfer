@@ -1,28 +1,26 @@
-Sub BoldTextInRowAE()
+Sub BoldOverdueInRowAE()
     Dim cell As Range
-    Dim issueSummaryPos As Integer, reasonForOverduePos As Integer, newStepsPos As Integer, revisedDueDatePos As Integer
+    Dim reasonForOverduePos As Integer
     Dim fullText As String
-
+    Dim reasonEndPos As Integer
+    
     ' Loop through all cells in row AE (change range as needed)
     For Each cell In Range("AE1:AE100") ' Adjust the range as per your requirement
         If Not IsEmpty(cell.Value) Then
             ' Construct the full text from cell value
             fullText = cell.Value
 
-            ' Identify the positions of the sections
-            issueSummaryPos = InStr(fullText, "Issue Summary:")
+            ' Identify the position of "Reason for Overdue:"
             reasonForOverduePos = InStr(fullText, "Reason for Overdue:")
-            newStepsPos = InStr(fullText, "New Steps:")
-            revisedDueDatePos = InStr(fullText, "When will a revised due date be acquired:")
 
-            ' Clear the formula (optional: you may want to preserve the formula in another way)
-            cell.Value = fullText
+            ' Check if "Reason for Overdue:" exists in the text
+            If reasonForOverduePos > 0 Then
+                ' Find the end of the "Reason for Overdue" section (this assumes it spans 18 characters)
+                reasonEndPos = reasonForOverduePos + Len("Reason for Overdue:")
 
-            ' Apply bold formatting to specific parts
-            If issueSummaryPos > 0 Then cell.Characters(issueSummaryPos, 14).Font.Bold = True
-            If reasonForOverduePos > 0 Then cell.Characters(reasonForOverduePos, 18).Font.Bold = True
-            If newStepsPos > 0 Then cell.Characters(newStepsPos, 9).Font.Bold = True
-            If revisedDueDatePos > 0 Then cell.Characters(revisedDueDatePos, 38).Font.Bold = True
+                ' Apply bold formatting to "Reason for Overdue:" and the content after it
+                cell.Characters(reasonForOverduePos, Len("Reason for Overdue:")).Font.Bold = True
+            End If
         End If
     Next cell
 End Sub
