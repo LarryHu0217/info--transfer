@@ -3,3 +3,66 @@
 
 <p><strong>Fixes for below production issues:</strong> (@{length(body('List_rows_present_in_a_table')?['value'])} total)</p>
 @{variables('htmlBody')}
+
+
+<table style="width:100%; border-collapse:collapse; font-family:Calibri, sans-serif; font-size:14px;">
+  <thead>
+    <tr style="background-color:#0072CE; color:#ffffff;">
+      <th style="padding:10px; border:1px solid #ddd;">Fixed Issue ID</th>
+      <th style="padding:10px; border:1px solid #ddd;">Issue Info</th>
+    </tr>
+  </thead>
+  <tbody>
+
+
+<tr>
+  <td style="padding:10px; border:1px solid #ddd;">@{items('Apply_to_each')?['Fixed Issue ID']}</td>
+  <td style="padding:10px; border:1px solid #ddd;">@{items('Apply_to_each')?['Issue Info']}</td>
+</tr>
+
+</tbody></table>
+
+
+<p style="font-family:Calibri,sans-serif;font-size:14px;">
+  <strong>Fixes for below production issues:</strong>
+  (@{length(body('List_rows_present_in_a_table')?['value'])} total)
+</p>
+@{variables('htmlBody')}
+
+
+
+
+
+
+<p style="font-family:Calibri,sans-serif; font-size:14px;">
+  <strong>Release Announcement – Fraud Case Management, Pega Enhancement & Defect Fixes</strong>
+</p>
+
+<p style="font-family:Calibri,sans-serif; font-size:14px;">
+  We are pleased to announce the successful rollout of our bi-monthly Pega release. This update addresses 8 incidents, enhancements, and performance improvements.
+</p>
+
+<p style="font-family:Calibri,sans-serif; font-size:14px;"><strong>Release Scope & Benefits:</strong></p>
+<ul style="font-family:Calibri,sans-serif; font-size:14px;">
+  <li><strong>Access groups with elevated security:</strong> Strengthens the overall application security score.</li>
+  <li><strong>SLA Automation on Quality Fraud:</strong> Reduces chargeback volume and manual work.</li>
+  <li><strong>Adhoc Case Processing:</strong> Reduces case handling effort across systems.</li>
+  <li><strong>Custom Reports:</strong> Enables managers to build reports without development work.</li>
+</ul>
+
+<p style="font-family:Calibri,sans-serif; font-size:14px;">
+  <strong>Fixes for Production Issues (@{length(body('List_rows_present_in_a_table')?['value'])} total):</strong>
+</p>
+
+<table style="width:100%; border-collapse:collapse; font-family:Calibri,sans-serif; font-size:14px;">
+  <thead>
+    <tr style="background-color:#0072CE; color:#ffffff;">
+      <th style="border:1px solid #cccccc; padding:8px;">Fixed Issue ID</th>
+      <th style="border:1px solid #cccccc; padding:8px;">Issue Info</th>
+    </tr>
+  </thead>
+  <tbody>
+    @{variables('htmlBody')}
+  </tbody>
+</table>
+
