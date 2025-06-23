@@ -1,0 +1,5 @@
+<li><strong>@{items('Apply_to_each')?['Fixed Issue ID']}</strong>: @{items('Apply_to_each')?['Issue Info']}</li>
+
+
+<p><strong>Fixes for below production issues:</strong> (@{length(body('List_rows_present_in_a_table')?['value'])} total)</p>
+@{variables('htmlBody')}
