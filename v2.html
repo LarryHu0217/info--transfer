@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Barclays Release</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #e0e0e0; /* sky blue */
+      font-family: Calibri, sans-serif;
+      font-size: 14px;
+      color: #000000;
+    }
+
+    .wrapper {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: #ffffff;
+      padding: 40px 50px;
+    }
+
+    .header-bar {
+      background-color: #00a1df;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .header-bar img {
+      height: 40px;
+    }
+
+    .title {
+      color: white;
+      margin-top: 15px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    h2 {
+      color: #0072ce;
+      margin-top: 20px;
+    }
+
+    .chg-id {
+      color: #0072ce;
+      font-weight: bold;
+      margin: 10px 0 20px 0;
+    }
+
+    .section-header {
+      background-color: #e5f4fb;
+      padding: 10px 15px;
+      font-weight: bold;
+      border-left: 5px solid #00a1df;
+      margin-top: 30px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 25px;
+      background-color: #e5f4fb;
+      padding: 15px;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sky Blue Header with White Title -->
+  <div class="header-bar">
+    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/62/Barclays_logo.svg/1920px-Barclays_logo.svg.png" alt="Barclays Logo" />
+    <div class="title">US Fraud Servicing – Release Announcement</div>
+  </div>
+
+  <!-- Main White Content -->
+  <div class="wrapper">
+    <h2>Fraud Case Management – Pega Enhancement & Defect Fixes</h2>
+    <p class="chg-id">CHG1018852441 (07:30 22/05/2025 to 15:30 22/05/2025)</p>
+
+    <p><strong>Release Announcement:</strong></p>
+    <p>
+      We are happy to announce the successful rollout of our first regularly scheduled bi-monthly Pega Release.
+    </p>
+    <p>
+      This release addresses 8 Incident, defect fixes & enhancements, improving the agent experience as well as Pega performance. For a more detailed breakdown see the “New Functionality Released” and “Incident Fixes Released” sections below.
+    </p>
+
+    <div class="section-header">Release Scope & Benefits:</div>
+    <ul>
+      <li><strong>Access groups with elevated security:</strong> User security with elevated permissions has been addressed and this will strengthen the overall application security score.</li>
+      <li><strong>SLA Automation on Quality Fraud:</strong> Enabling SLA based automation for Quality Fraud assignment sets will reduce the agent overhead and increase chargeback volumes.</li>
+      <li><strong>Enhancing Adhoc Case Processing:</strong> Enriching Adhoc case by fetching merchant information to facilitate tagging and will reduce agent overhead as this will reduce switching application between TSYS and Pega.</li>
+      <li><strong>Custom Report:</strong> Enabling custom report functionality to Managers to create new own reports will provide greater flexibility to operation managers as they can build their own reports within Pega without any code changes.</li>
+    </ul>
+
+    <div class="section-header">Fixes for below production issues:</div>
+    <ul>
+      <li><strong>INC1038844639:</strong> Case Feeder logic is addressed to provide accurate set of Dispute based on the Account level Fraud Balance.</li>
+      <li><strong>INC1038758697:</strong> RegZ finality date calculation has been addressed for Adhoc cases and helps in being compliant with RegZ regulations.</li>
+      <li><strong>INC1038768404:</strong> Case reconciliation batch process is addressed to handle non purchase transactions.</li>
+      <li><strong>INC1038597014:</strong> False negatives encountered as part of VISA validations is being addressed & will improve automated chargeback volumes.</li>
+      <li><strong>INC1038733941:</strong> Exception handling mechanism for Account level change of Fraud process is updated to present valid Account Level details.</li>
+      <li><strong>INC1039508409:</strong> Intelligent exception handling mechanism for Mastercard services are introduced and this will avoid issues during transaction being reported to Mastercard.</li>
+      <li><strong>INC1037550736:</strong> Invalid scheduled items are being removed from Pega SLA Queue.</li>
+    </ul>
+  </div>
+
+</body>
+</html>
